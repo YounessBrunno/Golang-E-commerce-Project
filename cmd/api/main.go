@@ -1,10 +1,14 @@
 package main
 
-import (
-	"fmt"
-)
+
 
 func main() {
 
-	fmt.Println("Hello, World!")
+	cfg := config{
+		
+	}
+
+	api := application{
+		config: cfg,
+	}
 }
