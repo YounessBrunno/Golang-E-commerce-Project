@@ -1,6 +1,6 @@
 package main
 
-import "net/http"
+
 
 func main() {
 
@@ -13,7 +13,7 @@ func main() {
 		config: cfg,
 	}
     
-	http.ListenAndServe(cfg.addr, api.mount())
-
+	api.serve()
+	
 }
 
