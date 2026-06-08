@@ -1,10 +1,12 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
-	"log"
+    "github.com/YounessBrunno/Golang-E-commerce-Project/internals/middleware"
 )
+
 
 type application struct {
 	config config
@@ -26,16 +28,16 @@ func (app *application) mount() http.Handler {
 }
 
 func (app *application) serve(h http.Handler) error {
-
+    
 	server := http.Server{
 		Addr:         app.config.addr,
-		Handler:      h,
+		Handler:      middleware.LoggingMiddleware(h),
 		WriteTimeout: 30 * time.Second,
 		ReadTimeout:  10 * time.Second,
 		IdleTimeout:  1 * time.Minute,
 	}
 
-    log.Printf("Starting server on %s", app.config.addr);
+	log.Printf("Starting server on %s", app.config.addr)
 
 	return server.ListenAndServe()
 }
