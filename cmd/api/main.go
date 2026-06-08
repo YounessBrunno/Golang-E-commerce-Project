@@ -1,6 +1,10 @@
 package main
 
 
+import ( "log"
+         "os" )
+
+
 
 func main() {
 
@@ -13,7 +17,11 @@ func main() {
 		config: cfg,
 	}
     
-	api.serve(api.mount())
-	
-}
+	if err := api.serve(api.mount()); err != nil {
+		
+		log.Printf("server has failed to start, error: %v", err)
 
+		os.Exit(1)
+	}
+
+}
