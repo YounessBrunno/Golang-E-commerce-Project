@@ -12,7 +12,7 @@ func (app *application) mount() http.Handler {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello, World!"))
 	})
-	
+
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Health check passed!"))
 	})
@@ -21,15 +21,16 @@ func (app *application) mount() http.Handler {
 
 }
 
-func (app *application) serve() http.Handler {
+func (app *application) serve(h http.Handler) error {
 
 	server := http.Server{
 		Addr:    app.config.addr,
-		Handler: app.mount(),
+		Handler: h,
 	}
-
-	return server.Handler
+	
+	return server.ListenAndServe()
 }
+
 type config struct {
 	addr string
 	db   DBConfig

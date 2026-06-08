@@ -13,7 +13,7 @@ func main() {
 		config: cfg,
 	}
     
-	api.serve()
+	api.serve(api.mount())
 	
 }
 
