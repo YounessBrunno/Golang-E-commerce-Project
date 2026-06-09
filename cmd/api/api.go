@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"time"
-    "github.com/YounessBrunno/Golang-E-commerce-Project/internals/middleware"
+    "github.com/YounessBrunno/Golang-E-commerce-Project/internals/middlewares"
 )
 
 

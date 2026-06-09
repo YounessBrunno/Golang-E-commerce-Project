@@ -1,1 +1,5 @@
-package orders
+package products
+
+type ProductService interface {
+
+}

@@ -1,1 +1,6 @@
-package orders
+package products
+
+
+type Handler struct {
+   productService ProductService
+}
