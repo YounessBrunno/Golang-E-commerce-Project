@@ -17,11 +17,14 @@ func (app *application) mount() http.Handler {
 
 	mux := http.NewServeMux()
 	
-
+	
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Health check passed!"))
 	})
-	
+
+	ProductHandler := products.NewHandler(nil)
+
+	mux.HandleFunc("/products", ProductHandler.ListProducts)
 
 	return mux
 
