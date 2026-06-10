@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
     "github.com/YounessBrunno/Golang-E-commerce-Project/internals/middlewares"
+	"github.com/YounessBrunno/Golang-E-commerce-Project/internals/products"
 )
 
 
@@ -13,15 +14,14 @@ type application struct {
 }
 
 func (app *application) mount() http.Handler {
-	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, World!"))
-	})
+	mux := http.NewServeMux()
+	
 
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Health check passed!"))
 	})
+	
 
 	return mux
 
