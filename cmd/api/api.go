@@ -22,7 +22,7 @@ func (app *application) mount() http.Handler {
 		w.Write([]byte("Health check passed!"))
 	})
 
-	ProductHandler := products.NewHandler(nil)
+	ProductHandler := products.NewHandler(products.NewProductService())
 
 	mux.HandleFunc("/products", ProductHandler.ListProducts)
 
