@@ -5,9 +5,9 @@ CREATE TABLE IF NOT EXISTS products (
     description TEXT,
     price_in_cents INT NOT NULL CHECK (price_in_cents >= 0),
     quantity INT NOT NULL DEFAULT 0 CHECK (quantity >= 0),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
 );
 
 -- +goose Down
-SELECT 'down SQL query';
+DROP TABLE IF EXISTS products;
