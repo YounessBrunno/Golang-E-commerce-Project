@@ -2,10 +2,10 @@ package env
 
 import "os"
 
-func GetEnv(key, fallbackValue string) string {
-	if value := os.Getenv(key); value != "" {
+func GetEnvKey(key, fallbackValue string) string {
+
+	if value, exists := os.LookupEnv(key); exists {
 		return value
 	}
-
 	return fallbackValue
 }
