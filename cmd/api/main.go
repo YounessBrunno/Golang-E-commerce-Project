@@ -1,11 +1,13 @@
 package main
 
+import (
+	"database/sql"
+	"log"
+	"os"
 
-import ( "log"
-         "os"
-		 "database/sql"
-		  _ "github.com/jackc/pgx/v5/stdlib"
-	         )
+	"github.com/YounessBrunno/Golang-E-commerce-Project/internals/env"
+	_ "github.com/jackc/pgx/v5/stdlib"
+)
 
 
 func main() {
@@ -13,7 +15,7 @@ func main() {
 	cfg := config{
 		addr: ":8000",
 		db: DBConfig{
-			dsn: "user=postgres password=password dbname=ecommerce-db host=localhost port=5432 sslmode=disable",
+			dsn: env.GetEnv("DB_DSN", "user=postgres password=password dbname=ecommerce-db host=localhost port=5432 sslmode=disable"),
 		},
 	}
 
