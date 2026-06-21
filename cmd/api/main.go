@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"github.com/YounessBrunno/Golang-E-commerce-Project/internals/env"
-    "github.com/YounessBrunno/Golang-E-commerce-Project/internals/middlewares"
+    "log/slog"
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
@@ -21,7 +21,9 @@ func main() {
 		},
 	}
 
-	// logger middleware
+	// logger
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+    slog.SetDefault(logger)   
 
 	// Database
 	connection, err := sql.Open("pgx", cfg.db.dsn)
@@ -33,6 +35,8 @@ func main() {
 
 	defer connection.Close()
 
+	logger.Info("Database connection established successfully","dsn", cfg.db.dsn)
+
     //application
 	api := application{
 		config: cfg,
@@ -40,7 +44,7 @@ func main() {
     
 	if err := api.serve(api.mount()); err != nil {
 		
-		log.Printf("server has failed to start, error: %v", err)
+		logger.Error("server has failed to start", "error", err)
 
 		os.Exit(1)
 	}
