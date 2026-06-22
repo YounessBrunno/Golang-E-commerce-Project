@@ -1,21 +1,23 @@
 package products
 
-import "context"
+import ("context"
+        repo "github.com/YounessBrunno/Golang-E-commerce-Project/internals/adapters/postgresql/sqlc" 
+       )                                                         
+        
 
 type ProductService interface {
-   ListProducts(ctx context.Context) ([]string, error)
+   ListProducts(ctx context.Context) ([]repo.Product, error)
 }
 
 type productSvc struct {
-   // ProductRepo ProductRepository
+   repo repo.Querier
 }
-
-func NewProductService() ProductService {
+func NewProductService(repo repo.Querier) ProductService {
    return &productSvc{
-	  // ProductRepo: repo,
+	  repo: repo,
    }
 }
 
-func (s *productSvc) ListProducts(ctx context.Context) ([]string, error) {
-   return []string{"Product 1", "Product 2", "Product 3"}, nil
+func (s *productSvc) ListProducts(ctx context.Context) ([]repo.Product, error) {
+   return s.repo.ListProducts(ctx)
 }

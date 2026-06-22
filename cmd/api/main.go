@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"log"
 	"os"
 	"github.com/YounessBrunno/Golang-E-commerce-Project/internals/env"
-    "log/slog"
-	_ "github.com/jackc/pgx/v5/stdlib"
+	"log/slog"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 
@@ -25,21 +24,24 @@ func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
     slog.SetDefault(logger)   
 
-	// Database
-	connection, err := sql.Open("pgx", cfg.db.dsn)
+	// Database (pgxpool)
+	pool, err := pgxpool.New(ctx, cfg.db.dsn)
 	if err != nil {
-		log.Fatal("failed to connect to database:", err)
+		log.Fatal("failed to create pgx pool:", err)
 	}
-	
-    connection.PingContext(ctx)
 
-	defer connection.Close()
+	if err := pool.Ping(ctx); err != nil {
+		log.Fatal("failed to ping database:", err)
+	}
 
-	logger.Info("Database connection established successfully","dsn", cfg.db.dsn)
+	defer pool.Close()
 
-    //application
+	logger.Info("Database connection established successfully", "dsn", cfg.db.dsn)
+
+	// application
 	api := application{
 		config: cfg,
+		db:     pool,
 	}
     
 	if err := api.serve(api.mount()); err != nil {

@@ -4,13 +4,15 @@ import (
 	"log"
 	"net/http"
 	"time"
-    "github.com/YounessBrunno/Golang-E-commerce-Project/internals/middlewares"
+	"github.com/YounessBrunno/Golang-E-commerce-Project/internals/middlewares"
 	"github.com/YounessBrunno/Golang-E-commerce-Project/internals/products"
+	repo "github.com/YounessBrunno/Golang-E-commerce-Project/internals/adapters/postgresql/sqlc"
 )
 
 
 type application struct {
 	config config
+	db     repo.DBTX
 }
 
 func (app *application) mount() http.Handler {
@@ -22,7 +24,7 @@ func (app *application) mount() http.Handler {
 		w.Write([]byte("Health check passed!"))
 	})
 
-	ProductHandler := products.NewHandler(products.NewProductService())
+	ProductHandler := products.NewHandler(products.NewProductService(repo.New(app.db)))
 
 	mux.HandleFunc("/products", ProductHandler.ListProducts)
 
